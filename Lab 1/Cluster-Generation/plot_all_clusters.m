@@ -19,6 +19,7 @@ samples_e = bivariate_normal(n_e, covar_e, mu_e);
 %% Case 1
 close all;
 
+figure(1);
 hold on;
 scatter(samples_a(:, 1), samples_a(:, 2), 'rx');
 scatter(samples_b(:, 1), samples_b(:, 2), 'bo');
@@ -37,10 +38,8 @@ legend('Class A', 'Class B', 'Location', 'northeast');
 hold off;
 
 %% Case 2
-close all;
-
+figure(2);
 hold on;
-
 scatter(samples_c(:, 1), samples_c(:, 2), 'rx');
 scatter(samples_d(:, 1), samples_d(:, 2), 'bo');
 scatter(samples_e(:, 1), samples_e(:, 2), 'k+');
