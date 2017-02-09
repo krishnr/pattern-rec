@@ -6,6 +6,9 @@
 % Brady Kieffer - 20517665
 % Krishn Ramesh - 20521942
 
+%% Set the random state for consistency
+rng(420);
+
 %% Creates the class data
 class_data;
 
