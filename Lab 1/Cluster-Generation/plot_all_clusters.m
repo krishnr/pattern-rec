@@ -63,3 +63,28 @@ plot_ellipse(mu_e(1),mu_e(2), theta_e,covar_e(1,1),covar_e(2,2), 'k');
 title('Plot of Samples of Class C, Class D & Class E');
 legend('Class C', 'Class D', 'Class E', 'Location', 'northeast');
 hold off;
+
+%% Decision boundaries
+xx = -5.0:0.5:20;
+yy =  0.0:0.5:25;
+
+ged_boundary = get_decision_boundary(@generalized_euclidean_distance, xx, yy, covar_a, mu_a, covar_b, mu_b);
+
+figure(3);
+hold on;
+scatter(samples_a(:, 1), samples_a(:, 2), 'rx');
+scatter(samples_b(:, 1), samples_b(:, 2), 'bo');
+contour(xx, yy, ged_boundary,[0,0], 'Color', 'black', 'LineWidth', 3);
+
+plot(mu_a(1), mu_a(2), 'gx');
+plot(mu_b(1), mu_b(2), 'go');
+
+theta_a = atan(eig_vecs_a(2,2)/eig_vecs_a(2,1));
+plot_ellipse(mu_a(1),mu_a(2), theta_a,covar_a(1,1),covar_a(2,2), 'r');
+
+theta_b = atan(eig_vecs_b(2,2)/eig_vecs_b(2,1));
+plot_ellipse(mu_b(1),mu_b(2), theta_b,covar_b(1,1),covar_b(2,2), 'b');
+
+title('Plot of Decision Boundaries between Class A and Class B');
+legend('Class A', 'Class B', 'Location', 'northeast');
+hold off;
