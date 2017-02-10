@@ -65,9 +65,7 @@ legend('Class C', 'Class D', 'Class E', 'Location', 'northeast');
 hold off;
 
 %% Decision boundaries
-xx = -5.0:0.5:20;
-yy =  0.0:0.5:25;
-
+[xx, yy] = meshgrid(-5.0:20, 0.0:25);
 ged_boundary = get_decision_boundary(@generalized_euclidean_distance, xx, yy, covar_a, mu_a, covar_b, mu_b);
 
 figure(3);
