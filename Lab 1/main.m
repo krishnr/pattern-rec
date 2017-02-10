@@ -9,6 +9,8 @@
 
 %% Creates the samples for each class
 
+clear;
+
 % Set the random state for consistency
 rng(420);
 
@@ -20,6 +22,18 @@ samples_b = bivariate_normal(n_b, covar_b, mu_b);
 samples_c = bivariate_normal(n_c, covar_c, mu_c);
 samples_d = bivariate_normal(n_d, covar_d, mu_d);
 samples_e = bivariate_normal(n_e, covar_e, mu_e);
+
+%% Computing the classifiers
+x = -5:20;
+y = 0:25;
+[X1,Y1] = meshgrid(x,y);
+
+x = -5:25;
+y = -30:50;
+[X2,Y2] = meshgrid(x,y);
+
+MAP;
+GED;
 
 %% Case 1
 close all;
@@ -42,17 +56,10 @@ plot_ellipse(mu_a(1),mu_a(2), theta_a,covar_a(1,1),covar_a(2,2), 'r');
 theta_b = atan(eig_vecs_b(2,2)/eig_vecs_b(2,1));
 plot_ellipse(mu_b(1),mu_b(2), theta_b,covar_b(1,1),covar_b(2,2), 'b');
 
-% Initializing a 2D grid
-x = -5:20;
-y = 0:25;
-[X1,Y1] = meshgrid(x,y);
-
 % Plotting the MAP decision boundary
-MAP;
 contour(X1,Y1,MAP1,[0,0], 'Color', 'black', 'LineWidth', 3);
 
 % Plotting the GED descision boundary
-GED;
 contour(X1,Y1,GED1,[0,0], 'Color', 'cyan', 'LineWidth', 3);
 
 hold off;
@@ -64,10 +71,17 @@ legend('Class A', 'Class B', 'Location', 'northeast');
 figure(2);
 hold on;
 
+map = [1, 0.5, 0.5
+    0.5,0.5,1
+    0.6,0.6,0.6];
+colormap(map);
+contourf(X2,Y2,MAP2);
+
+
 % Plotting a scatter plot of all 3 classes
-scatter(samples_c(:, 1), samples_c(:, 2), 'rx');
-scatter(samples_d(:, 1), samples_d(:, 2), 'bo');
-scatter(samples_e(:, 1), samples_e(:, 2), 'k+');
+class_c = scatter(samples_c(:, 1), samples_c(:, 2), 'rx');
+class_d = scatter(samples_d(:, 1), samples_d(:, 2), 'bo');
+class_e = scatter(samples_e(:, 1), samples_e(:, 2), 'k+');
 
 % Plotting the means in green
 plot(mu_c(1), mu_c(2), 'gx');
@@ -84,7 +98,11 @@ plot_ellipse(mu_d(1),mu_d(2), theta_d,covar_d(1,1),covar_d(2,2), 'b');
 theta_e = atan(eig_vecs_e(1,2)/eig_vecs_e(1,1));
 plot_ellipse(mu_e(1),mu_e(2), theta_e,covar_e(1,1),covar_e(2,2), 'k');
 
+% contour(X2,Y2,MAP_cd,[0,0], 'Color', 'black', 'LineWidth', 3);
+% contour(X2,Y2,MAP_de,[0,0], 'Color', 'blue', 'LineWidth', 3);
+% contour(X2,Y2,MAP_ec,[0,0], 'Color', 'red', 'LineWidth', 3);
 
-title('Plot of Samples of Class C, Class D & Class E');
-legend('Class C', 'Class D', 'Class E', 'Location', 'northeast');
+
+title('Classification of Samples of Class C, Class D & Class E');
+legend([class_c,class_d,class_e], {'Class C', 'Class D', 'Class E'}, 'Location', 'northeast');
 hold off;

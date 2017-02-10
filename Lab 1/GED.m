@@ -12,6 +12,6 @@ for i=1:length(X1)
     for j=1:length(X1)
         v = [X1(i, j) Y1(i, j)];
         dist = get_dist(v, covar_a, mu_a) - get_dist(v, covar_b, mu_b);
-        GED1(i, j) = sign(dist);
+        GED1(i, j) = dist;
     end
 end
