@@ -1,4 +1,4 @@
-% MAP Classifier
+% Computes the GED boundary for a 2D grid
 %
 % Febuary 12 2017
 %
@@ -14,9 +14,6 @@ Q3 = log(n_a/n_b);
 Q4 = log(det(covar_a)/det(covar_b));
 
 %% Generating a 2D grid and classifying all the points using MAP boundary
-x = -5:20;
-y = 0:25;
-[X1,Y1] = meshgrid(x,y);
 MAP1 = zeros(size(Y1));
 
 for i = 1:length(X1)

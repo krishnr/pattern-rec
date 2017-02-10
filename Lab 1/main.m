@@ -42,9 +42,18 @@ plot_ellipse(mu_a(1),mu_a(2), theta_a,covar_a(1,1),covar_a(2,2), 'r');
 theta_b = atan(eig_vecs_b(2,2)/eig_vecs_b(2,1));
 plot_ellipse(mu_b(1),mu_b(2), theta_b,covar_b(1,1),covar_b(2,2), 'b');
 
+% Initializing a 2D grid
+x = -5:20;
+y = 0:25;
+[X1,Y1] = meshgrid(x,y);
+
 % Plotting the MAP decision boundary
 MAP;
 contour(X1,Y1,MAP1,[0,0], 'Color', 'black', 'LineWidth', 3);
+
+% Plotting the GED descision boundary
+GED;
+contour(X1,Y1,GED1,[0,0], 'Color', 'cyan', 'LineWidth', 3);
 
 hold off;
 
