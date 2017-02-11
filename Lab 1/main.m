@@ -7,13 +7,17 @@
 % Brady Kieffer - 20517665
 % Krishn Ramesh - 20521942
 
-%% Creates the samples for each class
-
+%% Remove any variables and close all plots
 clear;
+close all;
 
 % Set the random state for consistency
-% rng(420);
+rng(420);
 
+%% Add folders to the path so we can access functions
+addpath('./functions', './calculations');
+
+%% Creates the samples for each class
 class_data;
 
 samples_a = bivariate_normal(n_a, covar_a, mu_a);
@@ -24,22 +28,37 @@ samples_d = bivariate_normal(n_d, covar_d, mu_d);
 samples_e = bivariate_normal(n_e, covar_e, mu_e);
 
 %% Computing the classifiers
-x = -5:0.5:20;
-y = 0:0.5:25;
-[X1,Y1] = meshgrid(x,y);
+step = 0.5; % The lower this is the smoother the contours.
+x = -5:step:20;
+y = 0:step:25;
+[X1, Y1] = meshgrid(x,y);
 
-x = -5:0.5:25;
-y = -30:0.5:50;
-[X2,Y2] = meshgrid(x,y);
+x = -5:step:25;
+y = -30:step:50;
+[X2, Y2] = meshgrid(x,y);
 
-MAP;
-GED;
+compute_MAP;
+compute_GED;
+
+LINE_WIDTH = 2;
 
 %% Case 1       
-close all;
-
 figure(1);
 hold on;
+
+map = [
+    1, 0.5, 0.5
+    0.5, 0.5, 1];
+colormap(map);
+
+
+% Plotting the MAP decision boundary
+contourf(X1,Y1,MAP1, [-100, 0]);
+% Plotting the MAP decision boundary
+contour(X1,Y1,MAP1, [0, 0], 'Color', 'black', 'LineWidth', LINE_WIDTH);
+
+% Plotting the GED descision boundary
+contour(X1,Y1,GED1, [0, 0], 'Color', 'cyan', 'LineWidth', LINE_WIDTH);
 
 % Plotting a scatter plot of both classes
 samples_a_scatter = scatter(samples_a(:, 1), samples_a(:, 2), 'rx');
@@ -56,16 +75,10 @@ plot_ellipse(mu_a(1),mu_a(2), theta_a,covar_a(1,1),covar_a(2,2), 'r');
 theta_b = atan(eig_vecs_b(2,2)/eig_vecs_b(2,1));
 plot_ellipse(mu_b(1),mu_b(2), theta_b,covar_b(1,1),covar_b(2,2), 'b');
 
-% Plotting the MAP decision boundary
-contour(X1,Y1,MAP1,[0,0], 'Color', 'black', 'LineWidth', 3);
-
-% Plotting the GED descision boundary
-contour(X1,Y1,GED1,[0,0], 'Color', 'cyan', 'LineWidth', 3);
-
 hold off;
 
 title('Plot of Samples of Class A and Class B');
-legend('Class A', 'Class B', 'Location', 'northeast');
+legend([samples_a_scatter, samples_b_scatter], {'Class A', 'Class B'}, 'Location', 'northeast');
 
 %% Case 2
 figure(2);
@@ -110,3 +123,12 @@ plot_ellipse(mu_e(1),mu_e(2), theta_e,covar_e(1,1),covar_e(2,2), 'k');
 title('Classification of Samples of Class C, Class D & Class E');
 legend([class_c,class_d,class_e], {'Class C', 'Class D', 'Class E'}, 'Location', 'northeast');
 hold off;
+
+%% Error analysis
+disp('GED Error analysis:');
+GED_error_analysis;
+disp('MAP Error analysis:');
+MAP_error_analysis;
+
+%% Remove values from the path
+rmpath('./functions', './calculations');

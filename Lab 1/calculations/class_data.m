@@ -6,9 +6,6 @@
 % Krishn Ramesh - 20521942
 
 % Case 1
-clear;
-close all;
-
 n_a = 200; 
 mu_a = [5, 10];
 covar_a = [8, 0; 0, 4];
