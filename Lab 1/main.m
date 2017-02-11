@@ -71,12 +71,20 @@ legend('Class A', 'Class B', 'Location', 'northeast');
 figure(2);
 hold on;
 
+% Defining a color map for the regions
+% red = class C
+% blue = class D
+% dark grey = class E
 map = [
     1, 0.5, 0.5
     0.5,0.5,1
     0.6,0.6,0.6];
 colormap(map);
-contourf(X2, Y2, MAP2);
+
+% Plotting MAP decision boundary in black
+contourf(X2, Y2, MAP2, 'Color', 'black');
+
+% Plotting GED decision boundary in cyan
 contour(X2, Y2, GED2, 'Color', 'cyan');
 
 % Plotting a scatter plot of all 3 classes
@@ -98,10 +106,6 @@ plot_ellipse(mu_d(1),mu_d(2), theta_d,covar_d(1,1),covar_d(2,2), 'b');
 
 theta_e = atan(eig_vecs_e(1,2)/eig_vecs_e(1,1));
 plot_ellipse(mu_e(1),mu_e(2), theta_e,covar_e(1,1),covar_e(2,2), 'k');
-
-% contour(X2,Y2,MAP_cd,[0,0], 'Color', 'black', 'LineWidth', 3);
-% contour(X2,Y2,MAP_de,[0,0], 'Color', 'blue', 'LineWidth', 3);
-% contour(X2,Y2,MAP_ec,[0,0], 'Color', 'red', 'LineWidth', 3);
 
 title('Classification of Samples of Class C, Class D & Class E');
 legend([class_c,class_d,class_e], {'Class C', 'Class D', 'Class E'}, 'Location', 'northeast');

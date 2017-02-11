@@ -2,7 +2,7 @@
 
 %%%%%% Class 1 %%%%%%%
 
-% Mahalanobis distance
+% P(error) using Mahalanobis distance
 d_m = @(m_a, m_b, S) sqrt((m_a-m_b)*inv(S)*(m_a-m_b)');
 P_error_1 = qfunc(0.5*d_m(mu_a,mu_b,covar_a))
 
@@ -39,8 +39,13 @@ B_correct
 B_incorrect = length(samples_b) - B_correct
 
 
+
+
+
 %%%%%% Class 2 %%%%%%%
 
+% P(error)
+% wtf how i do this...
 
 % Confusion Matrix
 % C vs D
