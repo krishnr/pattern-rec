@@ -1,13 +1,4 @@
-%% GED
-
-
-%% MED
-
-
-%% kNN
-
-
-%% MAP
+%% MAP Error Analysis
 
 %%%%%% Class 1 %%%%%%%
 
