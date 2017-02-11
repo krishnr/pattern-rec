@@ -12,7 +12,7 @@
 clear;
 
 % Set the random state for consistency
-rng(420);
+% rng(420);
 
 class_data;
 
@@ -24,18 +24,18 @@ samples_d = bivariate_normal(n_d, covar_d, mu_d);
 samples_e = bivariate_normal(n_e, covar_e, mu_e);
 
 %% Computing the classifiers
-x = -5:20;
-y = 0:25;
+x = -5:0.5:20;
+y = 0:0.5:25;
 [X1,Y1] = meshgrid(x,y);
 
-x = -5:25;
-y = -30:50;
+x = -5:0.5:25;
+y = -30:0.5:50;
 [X2,Y2] = meshgrid(x,y);
 
 MAP;
 GED;
 
-%% Case 1
+%% Case 1       
 close all;
 
 figure(1);
@@ -71,12 +71,13 @@ legend('Class A', 'Class B', 'Location', 'northeast');
 figure(2);
 hold on;
 
-map = [1, 0.5, 0.5
+map = [
+    1, 0.5, 0.5
     0.5,0.5,1
     0.6,0.6,0.6];
 colormap(map);
-contourf(X2,Y2,MAP2);
-
+contourf(X2, Y2, MAP2);
+contour(X2, Y2, GED2, 'Color', 'cyan');
 
 % Plotting a scatter plot of all 3 classes
 class_c = scatter(samples_c(:, 1), samples_c(:, 2), 'rx');
