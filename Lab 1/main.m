@@ -30,13 +30,13 @@ samples_d = bivariate_normal(n_d, covar_d, mu_d);
 samples_e = bivariate_normal(n_e, covar_e, mu_e);
 
 %% Computing the classifiers
-step = 0.5; % The lower this is the smoother the contours.
-x = -5:step:20;
-y = 0:step:25;
+step = 0.2; % The lower this is the smoother the contours.
+x = min([samples_a(:,1);samples_b(:,1)])-1:step:max([samples_a(:,1);samples_b(:,1)])+1;
+y = min([samples_a(:,2);samples_b(:,2)])-1:step:max([samples_a(:,2);samples_b(:,2)])+1;
 [X1, Y1] = meshgrid(x,y);
 
-x = -5:step:25;
-y = -10:step:30;
+x = min([samples_c(:,1);samples_d(:,1);samples_e(:,1)])-1:step:max([samples_c(:,1);samples_d(:,1);samples_e(:,1)])+1;
+y = min([samples_c(:,2);samples_d(:,2);samples_e(:,2)])-1:step:max([samples_c(:,2);samples_d(:,2);samples_e(:,2)])+1;
 [X2, Y2] = meshgrid(x,y);
 
 compute_MAP;
