@@ -209,5 +209,19 @@ GED_error_analysis;
 disp('MAP Error analysis:');
 MAP_error_analysis;
 
+% Reset the random state for test data
+rng(69);
+test_a = bivariate_normal(n_a, covar_a, mu_a);
+test_b = bivariate_normal(n_b, covar_b, mu_b);
+
+test_c = bivariate_normal(n_c, covar_c, mu_c);
+test_d = bivariate_normal(n_d, covar_d, mu_d);
+test_e = bivariate_normal(n_e, covar_e, mu_e);
+
+disp('NN Error analysis:');
+NN_error_analysis;
+
+disp('KNN Error analysis:');
+KNN_error_analysis;
 %% Remove values from the path
 rmpath('./functions', './calculations');
