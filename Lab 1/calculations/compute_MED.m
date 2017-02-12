@@ -1,4 +1,4 @@
-% Computes the GED boundary for a 2D grid
+% Computes the MED boundary for a 2D grid
 %
 % Febuary 12 2017
 %

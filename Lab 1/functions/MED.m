@@ -3,7 +3,6 @@ function [ dist ] = MED( mean_a, mean_b, X, Y )
 
 if nargin < 4
     dist = zeros(length(X), 1);
-    %get_dist = @(point, mean) sum(bsxfun(@minus, mean, point).^2);
     get_dist = @(point, mean) sqrt((point-mean) * (point-mean)');
 
     for i=1:length(X)
@@ -12,8 +11,7 @@ if nargin < 4
     end
 else
     dist = zeros(size(X, 1), size(Y, 2));
-    %get_dist = @(point, mean) sum(bsxfun(@minus, mean, point).^2);
-    get_dist = @(point, mean) sqrt((point-mean) * (point-mean)');
+    get_dist = @(point, mean) (point-mean) * (point-mean)';
 
     for i=1:size(X, 1)
         for j=1:size(Y, 2)

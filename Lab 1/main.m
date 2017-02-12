@@ -55,7 +55,6 @@ map = [
     0.5, 0.5, 1];
 colormap(map);
 
-
 % Plotting the MAP decision boundary
 contourf(X1,Y1,MAP1, [-100, 0]);
 % Plotting the MAP decision boundary
@@ -63,6 +62,9 @@ contour(X1,Y1,MAP1, [0, 0], 'Color', 'black', 'LineWidth', LINE_WIDTH);
 
 % Plotting the GED descision boundary
 contour(X1,Y1,GED1, [0, 0], 'Color', 'cyan', 'LineWidth', LINE_WIDTH);
+
+% Plotting the MED boundaries
+contour(X1,Y1,MED1, [0, 0], 'Color', 'white', 'LineWidth', LINE_WIDTH);
 
 % Plotting a scatter plot of both classes
 samples_a_scatter = scatter(samples_a(:, 1), samples_a(:, 2), 'rx');
@@ -92,7 +94,6 @@ map = [
     0.5, 0.5, 1];
 colormap(map);
 
-
 % Plotting the Nearest Neighbour boundaries
 contour(X1,Y1,NN1, [0, 0], 'Color', 'black', 'LineWidth', LINE_WIDTH);
 contour(X1,Y1,KNN1, [0, 0], 'Color', 'magenta', 'LineWidth', LINE_WIDTH);
@@ -116,38 +117,6 @@ hold off;
 title('Plot of Samples of Class A and Class B with Nearest Neighbour Boundaries');
 legend([samples_a_scatter, samples_b_scatter], {'Class A', 'Class B'}, 'Location', 'northeast');
 
-%% Case 1 MED
-figure(3);
-hold on;
-
-map = [
-    1, 0.5, 0.5
-    0.5, 0.5, 1];
-colormap(map);
-
-
-% Plotting the MED boundaries
-contour(X1,Y1,MED1, [0, 0], 'Color', 'black', 'LineWidth', LINE_WIDTH);
-
-% Plotting a scatter plot of both classes
-samples_a_scatter = scatter(samples_a(:, 1), samples_a(:, 2), 'rx');
-samples_b_scatter = scatter(samples_b(:, 1), samples_b(:, 2), 'bo');
-
-% Plotting the means in green
-plot(mu_a(1), mu_a(2), 'gx');
-plot(mu_b(1), mu_b(2), 'go');
-
-% Plotting the unit std dev ellipse for each class
-theta_a = atan(eig_vecs_a(2,2)/eig_vecs_a(2,1));
-plot_ellipse(mu_a(1),mu_a(2), theta_a,covar_a(1,1),covar_a(2,2), 'r');
-
-theta_b = atan(eig_vecs_b(2,2)/eig_vecs_b(2,1));
-plot_ellipse(mu_b(1),mu_b(2), theta_b,covar_b(1,1),covar_b(2,2), 'b');
-
-title('Plot of Samples of Class A and Class B with MED Boundaries');
-legend([samples_a_scatter, samples_b_scatter], {'Class A', 'Class B'}, 'Location', 'northeast');
-hold off;
-
 %% Case 2
 figure(4);
 hold on;
@@ -167,6 +136,9 @@ contourf(X2, Y2, MAP2, 'Color', 'black');
 
 % Plotting GED decision boundary in cyan
 contour(X2, Y2, GED2, 'Color', 'cyan');
+
+% Plotting the MED decision boundary in white
+contour(X2, Y2, MED2, 'Color', 'white');
 
 % Plotting a scatter plot of all 3 classes
 class_c = scatter(samples_c(:, 1), samples_c(:, 2), 'rx');
@@ -209,7 +181,7 @@ colormap(map);
 % Plotting MAP decision boundary in black
 contourf(X2, Y2, NN2, 'Color', 'black');
 
-% Plotting GED decision boundary in cyan
+% Plotting GED decision boundary in magenta
 contour(X2, Y2, KNN2, 'Color', 'magenta');
 
 % Plotting a scatter plot of all 3 classes
@@ -236,48 +208,10 @@ title('Classification of Samples of Class C, Class D & Class E');
 legend([class_c,class_d,class_e], {'Class C', 'Class D', 'Class E'}, 'Location', 'northeast');
 hold off;
 
-%% Case 2 MED
-figure(6);
-hold on;
-
-% Defining a color map for the regions
-% red = class C
-% blue = class D
-% dark grey = class E
-map = [
-    1, 0.5, 0.5
-    0.5,0.5,1
-    0.6,0.6,0.6];
-colormap(map);
-
-% Plotting MAP decision boundary in black
-contourf(X2, Y2, MED2, 'Color', 'black');
-
-% Plotting a scatter plot of all 3 classes
-class_c = scatter(samples_c(:, 1), samples_c(:, 2), 'rx');
-class_d = scatter(samples_d(:, 1), samples_d(:, 2), 'bo');
-class_e = scatter(samples_e(:, 1), samples_e(:, 2), 'k+');
-
-% Plotting the means in green
-plot(mu_c(1), mu_c(2), 'gx');
-plot(mu_d(1), mu_d(2), 'go');
-plot(mu_e(1), mu_e(2), 'g+');
-
-% Plotting the unit std dev ellipses of all classes
-theta_c = atan(eig_vecs_c(1,2)/eig_vecs_c(1,1));
-plot_ellipse(mu_c(1),mu_c(2), theta_c,covar_c(1,1),covar_c(2,2), 'r');
-
-theta_d = atan(eig_vecs_d(1,2)/eig_vecs_d(1,1));
-plot_ellipse(mu_d(1),mu_d(2), theta_d,covar_d(1,1),covar_d(2,2), 'b');
-
-theta_e = atan(eig_vecs_e(1,2)/eig_vecs_e(1,1));
-plot_ellipse(mu_e(1),mu_e(2), theta_e,covar_e(1,1),covar_e(2,2), 'k');
-
-title('Classification of Samples of Class C, Class D & Class E using MED');
-legend([class_c,class_d,class_e], {'Class C', 'Class D', 'Class E'}, 'Location', 'northeast');
-hold off;
 
 %% Error analysis
+disp('MED Error analysis:');
+MED_error_analysis;
 disp('GED Error analysis:');
 GED_error_analysis;
 disp('MAP Error analysis:');
