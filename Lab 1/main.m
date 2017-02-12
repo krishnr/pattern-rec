@@ -7,6 +7,7 @@
 % Brady Kieffer - 20517665
 % Krishn Ramesh - 20521942
 % Ramandeep Farmaha - 20516974
+% Shubam Mehta - 20483061
 
 %% Remove any variables and close all plots
 clear;
@@ -217,6 +218,8 @@ GED_error_analysis;
 disp('MAP Error analysis:');
 MAP_error_analysis;
 
+disp('MED Error analysis:');
+MED_error_analysis;
 % Reset the random state for test data
 rng(69);
 test_a = bivariate_normal(n_a, covar_a, mu_a);
