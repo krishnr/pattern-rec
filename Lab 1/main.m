@@ -119,7 +119,7 @@ title('Plot of Samples of Class A and Class B with Nearest Neighbour Boundaries'
 legend([samples_a_scatter, samples_b_scatter], {'Class A', 'Class B'}, 'Location', 'northeast');
 
 %% Case 2
-figure(4);
+figure(3);
 hold on;
 
 % Defining a color map for the regions
@@ -166,7 +166,7 @@ legend([class_c,class_d,class_e], {'Class C', 'Class D', 'Class E'}, 'Location',
 hold off;
 
 %% Case 2 Nearest Neighbour Plots
-figure(5);
+figure(4);
 hold on;
 
 % Defining a color map for the regions
