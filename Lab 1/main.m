@@ -7,6 +7,7 @@
 % Brady Kieffer - 20517665
 % Krishn Ramesh - 20521942
 % Ramandeep Farmaha - 20516974
+% Shubam Mehta - 20483061
 
 %% Remove any variables and close all plots
 clear;
@@ -42,10 +43,11 @@ compute_MAP;
 compute_GED;
 compute_NN;
 compute_KNN;
+compute_MED;
 
 LINE_WIDTH = 2;
 
-%% Case 1       
+%% Case 1
 figure(1);
 hold on;
 
@@ -54,7 +56,6 @@ map = [
     0.5, 0.5, 1];
 colormap(map);
 
-
 % Plotting the MAP regions
 contourf(X1,Y1,MAP1, [-100, 0]);
 % Plotting the MAP decision boundary
@@ -62,6 +63,9 @@ contour(X1,Y1,MAP1, [0, 0], 'Color', 'black', 'LineWidth', LINE_WIDTH);
 
 % Plotting the GED descision boundary
 contour(X1,Y1,GED1, [0, 0], 'Color', 'cyan', 'LineWidth', LINE_WIDTH);
+
+% Plotting the MED boundaries
+contour(X1,Y1,MED1, [0, 0], 'Color', 'white', 'LineWidth', LINE_WIDTH);
 
 % Plotting a scatter plot of both classes
 samples_a_scatter = scatter(samples_a(:, 1), samples_a(:, 2), 'rx');
@@ -90,7 +94,6 @@ map = [
     1, 0.5, 0.5
     0.5, 0.5, 1];
 colormap(map);
-
 
 % Plotting the Nearest Neighbour boundaries
 contour(X1,Y1,NN1, [0, 0], 'Color', 'black', 'LineWidth', LINE_WIDTH);
@@ -134,6 +137,9 @@ contourf(X2, Y2, MAP2, 'Color', 'black');
 
 % Plotting GED decision boundary in cyan
 contour(X2, Y2, GED2, 'Color', 'cyan');
+
+% Plotting the MED decision boundary in white
+contour(X2, Y2, MED2, 'Color', 'white');
 
 % Plotting a scatter plot of all 3 classes
 class_c = scatter(samples_c(:, 1), samples_c(:, 2), 'rx');
@@ -203,7 +209,10 @@ title('Classification of Samples of Class C, Class D & Class E');
 legend([class_c,class_d,class_e], {'Class C', 'Class D', 'Class E'}, 'Location', 'northeast');
 hold off;
 
+
 %% Error analysis
+disp('MED Error analysis:');
+MED_error_analysis;
 disp('GED Error analysis:');
 GED_error_analysis;
 disp('MAP Error analysis:');
