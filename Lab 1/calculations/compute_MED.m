@@ -2,6 +2,7 @@
 %
 % Febuary 12 2017
 %
+% Shubam Mehta - 20483061
 
 %% Case 1
 MED1 = MED(mu_a, mu_b, X1, Y1);
