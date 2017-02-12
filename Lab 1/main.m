@@ -55,7 +55,7 @@ map = [
 colormap(map);
 
 
-% Plotting the MAP decision boundary
+% Plotting the MAP regions
 contourf(X1,Y1,MAP1, [-100, 0]);
 % Plotting the MAP decision boundary
 contour(X1,Y1,MAP1, [0, 0], 'Color', 'black', 'LineWidth', LINE_WIDTH);
@@ -174,9 +174,9 @@ map = [
 colormap(map);
 
 % Plotting MAP decision boundary in black
-contourf(X2, Y2, NN2, 'Color', 'black');
+contour(X2, Y2, NN2, 'Color', 'black');
 
-% Plotting GED decision boundary in cyan
+% Plotting GED decision boundary in magenta
 contour(X2, Y2, KNN2, 'Color', 'magenta');
 
 % Plotting a scatter plot of all 3 classes

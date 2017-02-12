@@ -2,10 +2,6 @@
 
 %%%%%% Class 1 %%%%%%%
 
-% P(error) using Mahalanobis distance
-d_m = @(m_a, m_b, S) sqrt((m_a-m_b)*inv(S)*(m_a-m_b)');
-P_error_1 = qfunc(0.5*d_m(mu_a,mu_b,covar_a));
-
 % Confusion matrix
 [TA, FA] = get_error(n_a, GED(covar_a, mu_a, covar_b, mu_b, samples_a), @(d) d < 0);
 [TB, FB] = get_error(n_b, GED(covar_a, mu_a, covar_b, mu_b, samples_b), @(d) d > 0);
@@ -16,6 +12,8 @@ GED_conf_matrix_ab = [
 ];
 disp('Confusion matrix for A & B:');
 disp(GED_conf_matrix_ab);
+
+P_error_1 = (FA + FB)/(n_a + n_b);
 
 disp('P_error for A & B:');
 disp(P_error_1);
@@ -99,5 +97,8 @@ GED_conf_matrix_cde = [
 disp('Confusion matrix for C, D & E:');
 disp(GED_conf_matrix_cde);
 
-disp('Percent Correct for C, D & E:');
-disp((TC + TE + TD) / (n_c + n_d + n_e) * 100.0);
+correct_2 = (TC + TE + TD) / (n_c + n_d + n_e);
+P_error_2 = 1 - correct_2;
+
+disp('P(error) for C, D & E:');
+disp(P_error_2);
