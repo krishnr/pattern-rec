@@ -36,7 +36,7 @@ y = 0:step:25;
 [X1, Y1] = meshgrid(x,y);
 
 x = -5:step:25;
-y = -30:step:50;
+y = -10:step:30;
 [X2, Y2] = meshgrid(x,y);
 
 compute_MAP;
@@ -77,10 +77,10 @@ plot(mu_b(1), mu_b(2), 'go');
 
 % Plotting the unit std dev ellipse for each class
 theta_a = atan(eig_vecs_a(2,2)/eig_vecs_a(2,1));
-plot_ellipse(mu_a(1),mu_a(2),theta_a,eig_vals_a(2,2),eig_vals_a(1,1), 'r');
+plot_ellipse(mu_a(1),mu_a(2),theta_a,sqrt(eig_vals_a(2,2)),sqrt(eig_vals_a(1,1)), 'r');
 
 theta_b = atan(eig_vecs_b(2,2)/eig_vecs_b(2,1));
-plot_ellipse(mu_b(1),mu_b(2),theta_b,eig_vals_b(2,2),eig_vals_b(1,1), 'b');
+plot_ellipse(mu_b(1),mu_b(2),theta_b,sqrt(eig_vals_b(2,2)),sqrt(eig_vals_b(1,1)), 'b');
 hold off;
 
 title('Plot of Samples of Class A and Class B');
@@ -109,10 +109,10 @@ plot(mu_b(1), mu_b(2), 'go');
 
 % Plotting the unit std dev ellipse for each class
 theta_a = atan(eig_vecs_a(2,2)/eig_vecs_a(2,1));
-plot_ellipse(mu_a(1),mu_a(2),theta_a,eig_vals_a(2,2),eig_vals_a(1,1), 'r');
+plot_ellipse(mu_a(1),mu_a(2),theta_a,sqrt(eig_vals_a(2,2)),sqrt(eig_vals_a(1,1)), 'r');
 
 theta_b = atan(eig_vecs_b(2,2)/eig_vecs_b(2,1));
-plot_ellipse(mu_b(1),mu_b(2),theta_b,eig_vals_b(2,2),eig_vals_b(1,1), 'b');
+plot_ellipse(mu_b(1),mu_b(2),theta_b,sqrt(eig_vals_b(2,2)),sqrt(eig_vals_b(1,1)), 'b');
 hold off;
 
 title('Plot of Samples of Class A and Class B with Nearest Neighbour Boundaries');
@@ -153,13 +153,13 @@ plot(mu_e(1), mu_e(2), 'g+');
 
 % Plotting the unit std dev ellipses of all classes
 theta_c = atan(eig_vecs_c(1,2)/eig_vecs_c(1,1));
-plot_ellipse(mu_c(1),mu_c(2), theta_c,eig_vals_c(1,1),eig_vals_c(2,2), 'r');
+plot_ellipse(mu_c(1),mu_c(2), theta_c,sqrt(eig_vals_c(1,1)),sqrt(eig_vals_c(2,2)), 'r');
 
 theta_d = atan(eig_vecs_d(1,2)/eig_vecs_d(1,1));
-plot_ellipse(mu_d(1),mu_d(2), theta_d,eig_vals_d(1,1),eig_vals_d(2,2), 'b');
+plot_ellipse(mu_d(1),mu_d(2), theta_d,sqrt(eig_vals_d(1,1)),sqrt(eig_vals_d(2,2)), 'b');
 
 theta_e = atan(eig_vecs_e(1,2)/eig_vecs_e(1,1));
-plot_ellipse(mu_e(1),mu_e(2), theta_e,eig_vals_e(1,1),eig_vals_e(2,2), 'k');
+plot_ellipse(mu_e(1),mu_e(2), theta_e,sqrt(eig_vals_e(1,1)),sqrt(eig_vals_e(2,2)), 'k');
 
 title('Classification of Samples of Class C, Class D & Class E');
 legend([class_c,class_d,class_e], {'Class C', 'Class D', 'Class E'}, 'Location', 'northeast');
@@ -197,13 +197,13 @@ plot(mu_e(1), mu_e(2), 'g+');
 
 % Plotting the unit std dev ellipses of all classes
 theta_c = atan(eig_vecs_c(1,2)/eig_vecs_c(1,1));
-plot_ellipse(mu_c(1),mu_c(2), theta_c,eig_vals_c(1,1),eig_vals_c(2,2), 'r');
+plot_ellipse(mu_c(1),mu_c(2), theta_c,sqrt(eig_vals_c(1,1)),sqrt(eig_vals_c(2,2)), 'r');
 
 theta_d = atan(eig_vecs_d(1,2)/eig_vecs_d(1,1));
-plot_ellipse(mu_d(1),mu_d(2), theta_d,eig_vals_d(1,1),eig_vals_d(2,2), 'b');
+plot_ellipse(mu_d(1),mu_d(2), theta_d,sqrt(eig_vals_d(1,1)),sqrt(eig_vals_d(2,2)), 'b');
 
 theta_e = atan(eig_vecs_e(1,2)/eig_vecs_e(1,1));
-plot_ellipse(mu_e(1),mu_e(2), theta_e,eig_vals_e(1,1),eig_vals_e(2,2), 'k');
+plot_ellipse(mu_e(1),mu_e(2), theta_e,sqrt(eig_vals_e(1,1)),sqrt(eig_vals_e(2,2)), 'k');
 
 title('Classification of Samples of Class C, Class D & Class E');
 legend([class_c,class_d,class_e], {'Class C', 'Class D', 'Class E'}, 'Location', 'northeast');
