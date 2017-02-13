@@ -11,7 +11,6 @@ elseif de >= 0 && ec <= 0
 else
     % else condition shouldn't ever be hit
     
-    % http://i0.kym-cdn.com/photos/images/newsfeed/000/173/576/Wat8.jpg?1315930535
     disp('wat..something is wrong');
     cd
     de
