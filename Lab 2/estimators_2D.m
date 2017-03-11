@@ -17,7 +17,7 @@ load('lab2_2.mat');
 %% Non-Parametric Estimation
 
 % Making a Gaussian window with variance of 400
-k = 200;
+k = 100;
 mu = [k/2 k/2];
 cov = [400 0; 0 400];
 step = 1;
@@ -49,11 +49,35 @@ scatter(cl(:,1),cl(:,2));
 contour(x_c,y_c,p_c);
 hold off;
 
-% figure(2);
-% contourf(x_a,y_a,p_a);
-% 
-% figure(3);
-% contourf(x_b,y_b,p_b);
-% 
-% figure(4);
-% contourf(x_c,y_c,p_c);
+[X2,Y2] = meshgrid(x_a, y_a);
+ML = zeros(size(X2));
+for i = 1:size(X2,1)
+   for j = 1:size(Y2,2)
+       class = classify_point(p_a(i,j), p_b(i,j), p_c(i,j));
+       ML(i,j) = class;
+   end
+end
+
+figure(2);
+hold on;
+
+% Defining a color map for the regions
+% red = class A
+% blue = class B
+% dark grey = class C
+map = [
+    1, 0.5, 0.5
+    0.5,0.5,1
+    0.6,0.6,0.6];
+colormap(map);
+
+% Plotting MAP decision boundary in black
+contourf(X2, Y2, ML, 'Color', 'black');
+
+class_c = scatter(al(:, 1), al(:, 2), 'rx');
+class_d = scatter(bl(:, 1), bl(:, 2), 'bo');
+class_e = scatter(cl(:, 1), cl(:, 2), 'k+');
+
+hold off;
+
+%% Testing
