@@ -26,10 +26,10 @@ step = 1;
 win = mvnpdf([X1(:) X2(:)], mu, cov);
 win = reshape(win,length(X2),length(X1));
 
-lowx = min([min(al(:,1)), min(bl(:,1)), min(cl(:,1))]) - 5;
-lowy = min([min(al(:,2)), min(bl(:,2)), min(cl(:,2))]) - 5;
-highx = max([max(al(:,1)), max(bl(:,1)), max(cl(:,1))]) + 5;
-highy = max([max(al(:,2)), max(bl(:,2)), max(cl(:,2))]) + 5;
+lowx = min([min(al(:,1)), min(bl(:,1)), min(cl(:,1))]) - 10;
+lowy = min([min(al(:,2)), min(bl(:,2)), min(cl(:,2))]) - 10;
+highx = max([max(al(:,1)), max(bl(:,1)), max(cl(:,1))]) + 10;
+highy = max([max(al(:,2)), max(bl(:,2)), max(cl(:,2))]) + 10;
 
 % Defining the area of interest
 res = [step lowx lowy highx  highy];
@@ -74,10 +74,58 @@ colormap(map);
 % Plotting MAP decision boundary in black
 contourf(X2, Y2, ML, 'Color', 'black');
 
-class_c = scatter(al(:, 1), al(:, 2), 'rx');
-class_d = scatter(bl(:, 1), bl(:, 2), 'bo');
-class_e = scatter(cl(:, 1), cl(:, 2), 'k+');
+class_c = scatter(at(:, 1), at(:, 2), 'rx');
+class_d = scatter(bt(:, 1), bt(:, 2), 'bo');
+class_e = scatter(ct(:, 1), ct(:, 2), 'k+');
 
 hold off;
 
 %% Testing
+
+num_aa = 0;
+num_ab = 0;
+num_ac = 0;
+for i=1:length(at)
+    class = interp2(X2,Y2,ML,at(i,1),at(i,2));
+    if class == 1; num_aa = num_aa + 1;
+    elseif class == 2; num_ab = num_ab + 1;
+    else num_ac = num_ac+1;
+    end
+end
+
+num_ba = 0;
+num_bb = 0;
+num_bc = 0;
+for i=1:length(bt)
+    class = interp2(X2,Y2,ML,bt(i,1),bt(i,2));
+    if class == 1; num_ba = num_ba + 1;
+    elseif class == 2; num_bb = num_bb + 1;
+    else num_bc = num_bc+1;
+    end
+end
+
+num_ca = 0;
+num_cb = 0;
+num_cc = 0;
+for i=1:length(ct)
+    class = interp2(X2,Y2,ML,ct(i,1),ct(i,2));
+    if class == 1; num_ca = num_ca + 1;
+    elseif class == 2; num_cb = num_cb + 1;
+    else num_cc = num_cc+1;
+    end
+end
+
+conf_matrix_abc = [
+    [num_aa, num_ab, num_ac];
+    [num_ba, num_bb, num_bc];
+    [num_ca, num_cb, num_cc];
+];
+
+disp('Confusion matrix for A, B & C:');
+disp(conf_matrix_abc);
+
+correct = (num_aa+num_bb+num_cc) / (length(at)+length(bt)+length(ct));
+P_error = 1 - correct;
+
+disp('P(error) for A, B & C:');
+disp(P_error);
