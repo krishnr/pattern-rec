@@ -53,7 +53,7 @@ hold off;
 ML = zeros(size(X2));
 for i = 1:size(X2,1)
    for j = 1:size(Y2,2)
-       class = classify_point(p_a(i,j), p_b(i,j), p_c(i,j));
+       [max_p, class] = max([p_a(i,j), p_b(i,j), p_c(i,j)]);
        ML(i,j) = class;
    end
 end
