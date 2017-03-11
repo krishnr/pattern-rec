@@ -9,7 +9,7 @@ for i=1:size(x,2)
     for j=1:size(a,2)
         sum = sum + normpdf(x(i), a(j), h);
     end
-    p_hat(i) = 1/N * 1/h * sum;
+    p_hat(i) = 1/N * sum;
 end
 
 end
