@@ -22,7 +22,7 @@
 % Nov. 1997
 %
 
-function [p,x,y] = parzen( data, res, win )
+function [p,x,y] = parzen2( data, res, win )
 
 if (size(data,2)>size(data,1)), data = data'; end;
 if (size(data,2)==2), data = [data ones(size(data))]; end;
