@@ -28,7 +28,7 @@ lambda_b = 1;
 %% Non-parametric estimation
 % Parzen method with Gaussian windows having std deviation 0.1 and 0.4
 
-N = size(a, 2);
+N = length(a);
 
 y = zeros(size(a));
 
@@ -50,7 +50,7 @@ plot(x,p_hat2);
 hold off;
 
 %% Set B
-N = size(b, 2);
+N = length(b);
 
 y = zeros(size(b));
 
