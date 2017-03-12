@@ -19,14 +19,52 @@ lambda_b = 1;
 %% Gaussian
 
 
-%% Exponential
+%% Parametric Estimation - Exponential
+% Set A
 
+y = zeros(size(a));
+
+min_val = 0;
+max_val = max(a(1,:))+1;
+
+x = min_val:0.01:max_val;
+norm = normpdf(x,mu_a,sd_a);
+
+lambda_est = exponential1(a);
+exp_est = exppdf(x, 1/lambda_est);
+
+figure(1);
+hold on;
+scatter(a,y);
+plot(x,norm);
+plot(x,exp_est);
+hold off;
+
+% Set B
+y = zeros(size(b));
+
+min_val = 0;
+max_val = max(b(1,:))+1;
+
+x = min_val:0.01:max_val;
+exp = exppdf(x,1/lambda_b);
+
+lambda_est = exponential1(b);
+exp_est = exppdf(x, 1/lambda_est);
+
+figure(2);
+hold on;
+scatter(b,y);
+plot(x,exp);
+plot(x,exp_est);
+hold off;
 
 %% Uniform
 
 
 %% Non-parametric estimation
 % Parzen method with Gaussian windows having std deviation 0.1 and 0.4
+% Set A
 
 N = length(a);
 
@@ -41,7 +79,7 @@ norm = normpdf(x,mu_a,sd_a);
 p_hat1 = parzen1(a,x,N,0.1);
 p_hat2 = parzen1(a,x,N,0.4);
 
-figure(1);
+figure(3);
 hold on;
 scatter(a,y);
 plot(x,norm);
@@ -49,7 +87,7 @@ plot(x,p_hat1);
 plot(x,p_hat2);
 hold off;
 
-%% Set B
+% Set B
 N = length(b);
 
 y = zeros(size(b));
@@ -63,7 +101,7 @@ exp = exppdf(x,1/lambda_b);
 p_hat1 = parzen1(b,x,N,0.1);
 p_hat2 = parzen1(b,x,N,0.4);
 
-figure(2);
+figure(4);
 hold on;
 scatter(b,y);
 plot(x,exp);
