@@ -71,7 +71,7 @@ map = [
     0.6,0.6,0.6];
 colormap(map);
 
-% Plotting MAP decision boundary in black
+% Plotting ML decision boundary in black
 contourf(X2, Y2, ML, 'Color', 'black');
 
 class_c = scatter(at(:, 1), at(:, 2), 'rx');
