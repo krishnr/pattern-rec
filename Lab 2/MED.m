@@ -1,5 +1,6 @@
 function [ dist ] = MED( mean_a, mean_b, X, Y )
 % Calculate MED for two classes
+% negative value means class a, positive value means class b
 
 if nargin < 4
     dist = zeros(length(X), 1);

@@ -67,13 +67,13 @@ for j=1:J
         n_ab = 0;
         n_ba = 0;
         for i=1:length(set_a)
-            if interp2(X1,Y1,discriminant,set_a(i,1),set_a(i,2)) < 0
+            if interp2(X1,Y1,discriminant,set_a(i,1),set_a(i,2)) > 0
                 n_ab = n_ab + 1;
             end
         end
         
         for i=1:length(b)
-            if interp2(X1,Y1,discriminant,set_b(i,1),set_b(i,2)) > 0
+            if interp2(X1,Y1,discriminant,set_b(i,1),set_b(i,2)) < 0
                 n_ba = n_ba + 1;
             end
         end
