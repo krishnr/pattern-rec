@@ -22,9 +22,7 @@ highy = max([max(a(:,1)), max(b(:,1))]) + 10;
 
 [X1, Y1] = meshgrid(lowx:step:highx, lowy:step:highy);
 
-discriminant_list = zeros(J,size(X1,1),size(X1,2));
-
-error_list = zeros(J, limit);
+misclassified = zeros(J, limit);
 
 set_a = a;
 set_b = b;
@@ -80,14 +78,12 @@ for j=1:J
             end
         end
         
-        error_list(j, num_tries) = n_ab + n_ba;        
+        % Store the total error for this try
+        misclassified(j, num_tries) = n_ab + n_ba;        
         
         num_tries
         num_tries = num_tries + 1;
     end
-    
-    % Discriminant is perfect or 20 discriminants have been tried; save it
-    discriminant_list(j,:,:) = discriminant;
 end
 
 %% Error Calculations
@@ -98,10 +94,10 @@ std_error_rate = zeros(1,J);
 total = length(a)+length(b);
 
 for j=1:J
-   avg_error_rate(j) = sum(error_list(j,:))/limit/total;
-   min_error_rate(j) = min(error_list(j,:))/total;
-   max_error_rate(j) = max(error_list(j,:))/total;
-   std_error_rate(j) = std(error_list(j,:));
+   avg_error_rate(j) = sum(misclassified(j,:))/limit/total;
+   min_error_rate(j) = min(misclassified(j,:))/total;
+   max_error_rate(j) = max(misclassified(j,:))/total;
+   std_error_rate(j) = std(misclassified(j,:));
 end
 
 %% Plots
