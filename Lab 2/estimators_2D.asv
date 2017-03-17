@@ -16,7 +16,7 @@ lowx = min([min(al(:,1)), min(bl(:,1)), min(cl(:,1))]) - 10;
 lowy = min([min(al(:,2)), min(bl(:,2)), min(cl(:,2))]) - 10;
 highx = max([max(al(:,1)), max(bl(:,1)), max(cl(:,1))]) + 10;
 highy = max([max(al(:,2)), max(bl(:,2)), max(cl(:,2))]) + 10;
-step_size = 1.0;
+step_size = 10.0;
 
 x = lowx:step_size:highx;
 y = lowy:step_size:highy;
@@ -28,14 +28,14 @@ y = lowy:step_size:highy;
 
 
 ML_ab = ML(mu_al, cov_al, mu_bl, cov_bl, xx, yy);
-ML_ac = ML(mu_cl, cov_cl, mu_al, cov_cl, xx, yy);
+ML_ca = ML(mu_al, cov_cl, mu_cl, cov_cl, xx, yy);
 ML_bc = ML(mu_bl, cov_bl, mu_cl, cov_cl, xx, yy);
 
 ML_boundaries = zeros(size(xx, 1), size(yy, 2));
 for i = 1:size(xx,1)
     for j = 1:size(yy,2)
         [ignore, class] = min([ML_ab(i,j), ML_ac(i,j), ML_bc(i,j)]);
-        ML_boundaries(i,j) = class;
+        ML_boundaries(i,j) = classify_point(ML_ab(i,j), ML_ca(i,j), ML_bc(i,j));
     end
 end
 
@@ -47,8 +47,8 @@ hold on;
 % blue = class B
 % dark grey = class C
 map = [
-    0.5, 0.5, 1
     1, 0.5, 0.5
+    0.5,0.5,1
     0.6,0.6,0.6];
 colormap(map);
 

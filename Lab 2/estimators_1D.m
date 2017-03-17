@@ -17,7 +17,54 @@ sd_a = 1;
 lambda_b = 1;
 
 %% Gaussian
+% Set A
+y = zeros(size(a));
 
+min_val = 0;
+max_val = max(a(1,:))+1;
+
+x = min_val:0.01:max_val;
+[mu_est, sigma_est] = gaussian1(a);
+
+norm = normpdf(x,mu_a,sd_a);
+norm_est = normpdf(x,mu_est, sigma_est);
+figure(5);
+hold on;
+scatter(a,y);
+plot(x,norm);
+plot(x,norm_est);
+title('Gaussian Estimate of Gaussian Distribution');
+strmu = ['\mu_{est}=', num2str(mu_est)];
+strsd = ['\sigma_{est}=', num2str(sigma_est)];
+text(9.0, 0.35, strmu, 'HorizontalAlignment', 'center');
+text(9.0, 0.32, strsd, 'HorizontalAlignment', 'center');
+grid on;
+hold off;
+
+% Set B
+y = zeros(size(b));
+
+min_val = 0;
+max_val = max(b(1,:))+1;
+
+x = min_val:0.01:max_val;
+exp = exppdf(x,1/lambda_b);
+
+[mu_est, sigma_est] = gaussian1(b);
+norm_est = normpdf(x,mu_est, sigma_est);
+
+figure(6);
+hold on;
+scatter(b,y);
+plot(x,exp);
+plot(x,norm_est);
+title('Gaussian Estimate of Exponential Distribution');
+strmu = ['\mu_{est}=', num2str(mu_est)];
+strsd = ['\sigma_{est}=', num2str(sigma_est)];
+text(5.0, 0.90, strmu, 'HorizontalAlignment', 'center');
+text(5.0, 0.85, strsd, 'HorizontalAlignment', 'center');
+grid on;
+hold off;
 
 %% Parametric Estimation - Exponential
 % Set A
