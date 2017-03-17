@@ -22,6 +22,8 @@ highy = max([max(a(:,1)), max(b(:,1))]) + 10;
 
 [X1, Y1] = meshgrid(lowx:step:highx, lowy:step:highy);
 
+discriminant_list = zeros(J, size(X1,1), size(X1,2));
+
 misclassified = zeros(J, limit);
 
 set_a = a;
@@ -33,18 +35,6 @@ n_ba = 1;
 for j=1:J
     j
     
-    % no points in A that are misclassified as B, so remove correctly
-    % classified points in B
-    if (n_ab == 0)
-        %TODO
-    end
-    
-    % no points in B that are misclassified as A, so remove correctly
-    % classified points in A
-    if (n_ba == 0)
-        %TODO
-    end
-    
     % matlab doesn't have do-whiles so have to initialize these to 1
     n_ab = 1;
     n_ba = 1;
@@ -53,7 +43,7 @@ for j=1:J
     
     % repeat while there's still misclassified points AND we're under the
     % limit AND neither set is empty
-    while(n_ab > 0 && n_ba > 0 && num_tries <= limit && ~isempty(set_a) && ~isempty(set_b))       
+    while((n_ab > 0 || n_ba > 0) && num_tries <= limit && ~isempty(set_a) && ~isempty(set_b))       
         % Set random points as the mean prototype
         r1 = randi([1 length(set_a)]);
         r2 = randi([1 length(set_b)]);
@@ -72,7 +62,7 @@ for j=1:J
             end
         end
         
-        for i=1:length(b)
+        for i=1:length(set_b)
             if interp2(X1,Y1,discriminant,set_b(i,1),set_b(i,2)) < 0
                 n_ba = n_ba + 1;
             end
@@ -84,7 +74,32 @@ for j=1:J
         num_tries
         num_tries = num_tries + 1;
     end
+    
+    % Discriminant is either perfect or 20 discriminants have been tried; save it
+    discriminant_list(j,:,:) = discriminant;
+    
+    % no points in A that are misclassified as B, so remove correctly
+    % classified points in B
+    if (n_ab == 0)
+        set_b = set_b(interp2(X1,Y1,discriminant,set_b(:,1),set_b(:,2)) < 0,:);
+    end
+    
+    % no points in B that are misclassified as A, so remove correctly
+    % classified points in A
+    if (n_ba == 0)
+        set_a = set_a(interp2(X1,Y1,discriminant,set_a(:,1),set_a(:,2)) > 0,:);
+    end
+    
+    n_ab
+    n_ba
+    length(set_a)
+    length(set_b)
 end
+
+n_ab
+n_ba
+length(set_a)
+length(set_b)
 
 %% Error Calculations
 avg_error_rate = zeros(1,J); 
