@@ -107,6 +107,44 @@ plot(x,exp_est);
 hold off;
 
 %% Uniform
+% Set A
+
+y = zeros(size(a));
+
+min_val = 0;
+max_val = max(a(1,:))+1;
+
+x = min_val:0.01:max_val;
+norm = normpdf(x,mu_a,sd_a);
+
+[a_est_a, b_est_a] = uniform(a);
+uniform_a = unifpdf(x, a_est_a, b_est_a);
+
+figure(3);
+hold on;
+scatter(a,y);
+plot(x,norm);
+plot(x,uniform_a);
+hold off;
+
+% Set B
+y = zeros(size(b));
+
+min_val = 0;
+max_val = max(b(1,:))+1;
+
+x = min_val:0.01:max_val;
+exp = exppdf(x,1/lambda_b);
+
+[a_est_b, b_est_b] = uniform(b);
+uniform_b = unifpdf(x, a_est_b, b_est_b);
+
+figure(4);
+hold on;
+scatter(b,y);
+plot(x,exp);
+plot(x,uniform_b);
+hold off;
 
 
 %% Non-parametric estimation
@@ -126,7 +164,7 @@ norm = normpdf(x,mu_a,sd_a);
 p_hat1 = parzen1(a,x,N,0.1);
 p_hat2 = parzen1(a,x,N,0.4);
 
-figure(3);
+figure(5);
 hold on;
 scatter(a,y);
 plot(x,norm);
@@ -148,7 +186,7 @@ exp = exppdf(x,1/lambda_b);
 p_hat1 = parzen1(b,x,N,0.1);
 p_hat2 = parzen1(b,x,N,0.4);
 
-figure(4);
+figure(6);
 hold on;
 scatter(b,y);
 plot(x,exp);
