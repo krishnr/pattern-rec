@@ -63,7 +63,7 @@ hold off;
 %% Non-Parametric Estimation
 
 % Making a Gaussian window with variance of 400
-k = 100;
+k = 400;
 mu = [k/2 k/2];
 cov = [400 0; 0 400];
 step = 1;

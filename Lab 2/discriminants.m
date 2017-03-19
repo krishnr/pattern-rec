@@ -29,21 +29,18 @@ misclassified = zeros(J, limit);
 set_a = a;
 set_b = b;
 
-n_ab = 1;
-n_ba = 1;
+% matlab doesn't have do-whiles so have to initialize these to 1
+n_ab = ones(J,1);
+n_ba = ones(J,1);
 
 for j=1:J
     j
-    
-    % matlab doesn't have do-whiles so have to initialize these to 1
-    n_ab = 1;
-    n_ba = 1;
     
     num_tries = 1;
     
     % repeat while there's still misclassified points AND we're under the
     % limit AND neither set is empty
-    while((n_ab > 0 || n_ba > 0) && num_tries <= limit && ~isempty(set_a) && ~isempty(set_b))       
+    while(n_ab(j) > 0 && n_ba(j) > 0 && num_tries <= limit && ~isempty(set_a) && ~isempty(set_b))       
         % Set random points as the mean prototype
         r1 = randi([1 length(set_a)]);
         r2 = randi([1 length(set_b)]);
@@ -54,52 +51,47 @@ for j=1:J
         discriminant = MED(mu_a,mu_b,X1,Y1);
         
         % Check for misclassified points
-        n_ab = 0;
-        n_ba = 0;
+        n_ab(j) = 0;
         for i=1:length(set_a)
             if interp2(X1,Y1,discriminant,set_a(i,1),set_a(i,2)) > 0
-                n_ab = n_ab + 1;
+                n_ab(j) = n_ab(j) + 1;
             end
         end
         
+        n_ba(j) = 0;
         for i=1:length(set_b)
             if interp2(X1,Y1,discriminant,set_b(i,1),set_b(i,2)) < 0
-                n_ba = n_ba + 1;
+                n_ba(j) = n_ba(j) + 1;
             end
         end
         
         % Store the total error for this try
-        misclassified(j, num_tries) = n_ab + n_ba;        
+        misclassified(j, num_tries) = n_ab(j) + n_ba(j);        
         
         num_tries
         num_tries = num_tries + 1;
     end
     
-    % Discriminant is either perfect or 20 discriminants have been tried; save it
+    % Discriminant either perfectly classifies 1 class or 20 discriminants have been tried; save it
     discriminant_list(j,:,:) = discriminant;
     
     % no points in A that are misclassified as B, so remove correctly
     % classified points in B
-    if (n_ab == 0)
+    if (n_ab(j) == 0)
         set_b = set_b(interp2(X1,Y1,discriminant,set_b(:,1),set_b(:,2)) < 0,:);
     end
     
     % no points in B that are misclassified as A, so remove correctly
     % classified points in A
-    if (n_ba == 0)
+    if (n_ba(j) == 0)
         set_a = set_a(interp2(X1,Y1,discriminant,set_a(:,1),set_a(:,2)) > 0,:);
     end
     
-    n_ab
-    n_ba
+    n_ab(j)
+    n_ba(j)
     length(set_a)
     length(set_b)
 end
-
-n_ab
-n_ba
-length(set_a)
-length(set_b)
 
 %% Error Calculations
 avg_error_rate = zeros(1,J); 
@@ -107,14 +99,32 @@ min_error_rate = zeros(1,J);
 max_error_rate = zeros(1,J); 
 std_error_rate = zeros(1,J);
 total = length(a)+length(b);
+wrong = zeros(1,J);
+test_a = zeros(1, length(a));
+test_b = zeros(1, length(b));
 
 for j=1:J
-   avg_error_rate(j) = sum(misclassified(j,:))/limit/total;
-   min_error_rate(j) = min(misclassified(j,:))/total;
-   max_error_rate(j) = max(misclassified(j,:))/total;
-   std_error_rate(j) = std(misclassified(j,:));
-end
+    for i=1:length(a)
+        discriminant = squeeze(discriminant_list(j,:,:));
+        
+        % Classified correctly as A
+        if test_a(i) == 0 && interp2(X1,Y1,discriminant,a(i,1),a(i,2)) < 0 && n_ba(j) == 0
+            test_a(i) = 1;
+        end
+        
+        % Classified correctly as B
+        if test_b(i) == 0 && interp2(X1,Y1,discriminant,b(i,1),b(i,2)) > 0 && n_ab(j) == 0
+            test_b(i) = 1;
+        end
+    end
+    
+    wrong(j) = length(test_a(test_a == 0)) + length(test_b(test_b==0));
 
+    avg_error_rate(j) = sum(wrong(j))/total;
+    min_error_rate(j) = min(misclassified(j,:))/total;
+    max_error_rate(j) = max(misclassified(j,:))/total;
+    std_error_rate(j) = std(misclassified(j,:)); 
+end
 %% Plots
 subplot(4,1,1);
 plot(1:J, avg_error_rate, 'o-','linewidth',2,'markersize',5,'markerfacecolor','r');
