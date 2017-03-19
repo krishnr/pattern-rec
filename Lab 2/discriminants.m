@@ -22,7 +22,9 @@ highy = max([max(a(:,1)), max(b(:,1))]) + 10;
 
 [X1, Y1] = meshgrid(lowx:step:highx, lowy:step:highy);
 
-discriminant_list = zeros(J, size(X1,1), size(X1,2));
+discriminant_list = zeros(J,limit,size(X1,1), size(X1,2));
+
+num_tries = ones(J,1);
 
 misclassified = zeros(J, limit);
 
@@ -36,11 +38,9 @@ n_ba = ones(J,1);
 for j=1:J
     j
     
-    num_tries = 1;
-    
     % repeat while there's still misclassified points AND we're under the
     % limit AND neither set is empty
-    while(n_ab(j) > 0 && n_ba(j) > 0 && num_tries <= limit && ~isempty(set_a) && ~isempty(set_b))       
+    while(n_ab(j) > 0 && n_ba(j) > 0 && num_tries(j) <= limit && ~isempty(set_a) && ~isempty(set_b))       
         % Set random points as the mean prototype
         r1 = randi([1 length(set_a)]);
         r2 = randi([1 length(set_b)]);
@@ -66,14 +66,13 @@ for j=1:J
         end
         
         % Store the total error for this try
-        misclassified(j, num_tries) = n_ab(j) + n_ba(j);        
+        misclassified(j, num_tries(j)) = n_ab(j) + n_ba(j);        
         
-        num_tries
-        num_tries = num_tries + 1;
+        num_tries(j)
+        num_tries(j) = num_tries(j) + 1;
+        
+        discriminant_list(j,num_tries(j),:,:) = discriminant;
     end
-    
-    % Discriminant either perfectly classifies 1 class or 20 discriminants have been tried; save it
-    discriminant_list(j,:,:) = discriminant;
     
     % no points in A that are misclassified as B, so remove correctly
     % classified points in B
@@ -99,31 +98,34 @@ min_error_rate = zeros(1,J);
 max_error_rate = zeros(1,J); 
 std_error_rate = zeros(1,J);
 total = length(a)+length(b);
-wrong = zeros(1,J);
+wrong = zeros(J,limit);
 test_a = zeros(1, length(a));
 test_b = zeros(1, length(b));
 
 for j=1:J
-    for i=1:length(a)
-        discriminant = squeeze(discriminant_list(j,:,:));
-        
-        % Classified correctly as A
-        if test_a(i) == 0 && interp2(X1,Y1,discriminant,a(i,1),a(i,2)) < 0 && n_ba(j) == 0
-            test_a(i) = 1;
+    for k = 1:num_tries(j)
+        for i=1:length(a)
+            discriminant = squeeze(discriminant_list(j,k,:,:));
+
+            % Classified correctly as A
+            if test_a(i) == 0 && interp2(X1,Y1,discriminant,a(i,1),a(i,2)) < 0 && n_ba(j) == 0
+                test_a(i) = 1;
+            end
+
+            % Classified correctly as B
+            if test_b(i) == 0 && interp2(X1,Y1,discriminant,b(i,1),b(i,2)) > 0 && n_ab(j) == 0
+                test_b(i) = 1;
+            end
         end
-        
-        % Classified correctly as B
-        if test_b(i) == 0 && interp2(X1,Y1,discriminant,b(i,1),b(i,2)) > 0 && n_ab(j) == 0
-            test_b(i) = 1;
-        end
+
+        % counts all points that were not classified or misclassified
+        wrong(j,k) = length(test_a(test_a == 0)) + length(test_b(test_b==0));
     end
     
-    wrong(j) = length(test_a(test_a == 0)) + length(test_b(test_b==0));
-
-    avg_error_rate(j) = sum(wrong(j))/total;
-    min_error_rate(j) = min(misclassified(j,:))/total;
-    max_error_rate(j) = max(misclassified(j,:))/total;
-    std_error_rate(j) = std(misclassified(j,:)); 
+    avg_error_rate(j) = sum(wrong(j,1:num_tries(j)))/num_tries(j)/total;
+    min_error_rate(j) = min(wrong(j,1:num_tries(j)))/total;
+    max_error_rate(j) = max(wrong(j,1:num_tries(j)))/total;
+    std_error_rate(j) = std(wrong(j,1:num_tries(j)));
 end
 %% Plots
 subplot(4,1,1);
