@@ -34,8 +34,21 @@ for i = 1:10
     S(i,:,2) = covar(2,:);
 end
 
+% defining a mesh grid
+step = 0.001;
+x_min = min([f2(1,:) f2t(1,:)]);
+x_max = max([f2(1,:) f2t(1,:)]);
+y_min = min([f2(2,:) f2t(2,:)]);
+y_max = max([f2(2,:) f2t(2,:)]);
+
+[X, Y] = meshgrid(x_min:step:x_max, y_min:step:y_max);
+
+% do we really have to do 45 of these to classify each point??
+dist_12 = MICD(mu(1,:),squeeze(S(1,:,:)),mu(2,:),squeeze(S(2,:,:)),X,Y);
 
 %% Image Classification and Segmentation
+
+% Use MICD classifier derived previously to classify multf8 
 
 
 %% Unlabelled Clustering
