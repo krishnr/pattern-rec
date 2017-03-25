@@ -108,7 +108,7 @@ classification_rates = [trace(confusion_matrix2)/length(f2t) trace(confusion_mat
 %% Image Classification and Segmentation
 
 % Use MICD classifier derived previously (class8) to classify multf8
-
+load MICD-data.mat;
 
 %% Unlabelled Clustering
 
