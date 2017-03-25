@@ -13,15 +13,6 @@
 clear;
 addpath('./lab3');
 load feat.mat;
-
-%% Helper Commands
-
-% opening an image
-% image = readim('cloth.im') ; imagesc(image) ; colormap(gray);
-
-% accessing the features
-% aplot(f2);
-
 %% MICD for f2
 mu = zeros(10,2);
 S = zeros(10, 2, 2);
@@ -116,13 +107,13 @@ end
 classification_rates = [trace(confusion_matrix2)/length(f2t) trace(confusion_matrix8)/length(f8t) trace(confusion_matrix32)/length(f32t)];
 %% Image Classification and Segmentation
 
-% Use MICD classifier derived previously to classify multf8 
+% Use MICD classifier derived previously (class8) to classify multf8
 
 
 %% Unlabelled Clustering
 
-% K = 10;
-% 
-% % Get K random prototypes
-% rand = randi([1 length(f32)], 1, K);
-% pts = f32(:,rand);
+K = 10;
+
+% Get K random prototypes
+rand = randi([1 length(f32)], 1, K);
+pts = f32(:,rand);
