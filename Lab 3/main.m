@@ -58,10 +58,10 @@ end
 
 % defining a mesh grid
 step = 0.001;
-x_min = min([f8(1,:) f8t(1,:)]) - 0.01;
-x_max = max([f8(1,:) f8t(1,:)]) + 0.01;
-y_min = min([f8(2,:) f8t(2,:)]) - 0.01;
-y_max = max([f8(2,:) f8t(2,:)]) + 0.01;
+x_min = min([f8(1,:) f8t(1,:) min(multf8(:,:, 1))]) - 0.01;
+x_max = max([f8(1,:) f8t(1,:) max(multf8(:,:, 1))]) + 0.01;
+y_min = min([f8(2,:) f8t(2,:) min(multf8(:,:, 2))]) - 0.01;
+y_max = max([f8(2,:) f8t(2,:) max(multf8(:,:, 2))]) + 0.01;
 
 [X, Y] = meshgrid(x_min:step:x_max, y_min:step:y_max);
 
@@ -109,20 +109,24 @@ classification_rates = [trace(confusion_matrix2)/length(f2t) trace(confusion_mat
 
 % Use MICD classifier derived previously (class8) to classify multf8
 load MICD-data.mat;
+cimage = zeros(256);
+[X, Y] = meshgrid(x_min:step:x_max, y_min:step:y_max);
+for i = 1:length(multf8)
+    for j = 1:length(multf8(1,:,:))
+        class = round(interp2(X,Y,class8,multf8(i,j,1),multf8(i,j,2)));
+        cimage(i,j) = class;
+    end
+end
+
+% Plot original image and classified image
+subplot(1,2,1), imagesc(multim)
+subplot(1,2,2), imagesc(cimage)
 
 %% Unlabelled Clustering
-clear;
-addpath('./lab3');
-load feat.mat;
-
 K = 10;
 
-% Get K random prototypes
-rand   = randi([1 length(f32)], 1, K);
-protos = transpose(f32(1:2,rand));
-pts    = transpose(f32(1:2, :));
-
-[prototypes, classes] = KMeans(pts, protos);
+pts = transpose(f32(1:2, :));
+[prototypes, classes] = KMeans(K, pts);
 
 % Plots the converged prototypes
 hold on;
@@ -130,4 +134,3 @@ title('Converged Prototypes with Provided Data')
 aplot(f32);
 scatter(prototypes(:, 1), prototypes(:, 2), 'r', 'Marker', 'x');
 hold off;
-

@@ -3,7 +3,8 @@ function [ prototypes, classes ] = KMeans( K, X )
 %   Detailed explanation goes here
 
 % Grab K prototypes randomly from X
-prototypes = protos;
+rand   = randi([1 length(X)], 1, K);
+prototypes = X(rand, :);
 new_prototypes = zeros(size(prototypes));
 
 while true
