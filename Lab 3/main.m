@@ -111,9 +111,23 @@ classification_rates = [trace(confusion_matrix2)/length(f2t) trace(confusion_mat
 load MICD-data.mat;
 
 %% Unlabelled Clustering
+clear;
+addpath('./lab3');
+load feat.mat;
 
 K = 10;
 
 % Get K random prototypes
-rand = randi([1 length(f32)], 1, K);
-pts = f32(:,rand);
+rand   = randi([1 length(f32)], 1, K);
+protos = transpose(f32(1:2,rand));
+pts    = transpose(f32(1:2, :));
+
+[prototypes, classes] = KMeans(pts, protos);
+
+% Plots the converged prototypes
+hold on;
+title('Converged Prototypes with Provided Data')
+aplot(f32);
+scatter(prototypes(:, 1), prototypes(:, 2), 'r', 'Marker', 'x');
+hold off;
+
